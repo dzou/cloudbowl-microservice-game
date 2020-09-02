@@ -27,6 +27,17 @@ public class Application {
     public String direction;
     public Boolean wasHit;
     public Integer score;
+
+    @Override
+    public String toString() {
+      return "PlayerState{" +
+          "x=" + x +
+          ", y=" + y +
+          ", direction='" + direction + '\'' +
+          ", wasHit=" + wasHit +
+          ", score=" + score +
+          '}';
+    }
   }
 
   static class Arena {
@@ -38,6 +49,7 @@ public class Application {
     public Links _links;
     public Arena arena;
   }
+
 
   public static void main(String[] args) {
     SpringApplication.run(Application.class, args);
@@ -55,11 +67,8 @@ public class Application {
 
   @PostMapping("/**")
   public String index(@RequestBody ArenaUpdate arenaUpdate) {
-    System.out.println(arenaUpdate);
-    String[] commands = new String[]{"F", "R", "L", "T"};
-    int i = new Random().nextInt(4);
-    return commands[i];
+    Engine engine = new Engine(arenaUpdate.arena.state, arenaUpdate.arena.dims.get(0), arenaUpdate.arena.dims.get(1));
+    return engine.getMove();
   }
-
 }
 
